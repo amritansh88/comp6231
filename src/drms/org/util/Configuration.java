@@ -1,11 +1,5 @@
 package drms.org.util;
 
-import java.net.SocketAddress;
-
-
-
-
-
 
 /**
  * This configuration file will be used to hold some shared variables 
@@ -21,9 +15,9 @@ public class Configuration {
 	 * @deprecated has to be replaced with RM_PORT_NUMBER instead
 	 */
 	public static final int REPLICA_MANAGER_SOCKET = 2626;
-	public static final String RM_ONE = "Amritansh-HP";
-	public static final String RM_TWO = "gost-via-mac";
-	public static final String RM_THREE = "";
+	public static final String RM_ONE = "172.31.93.79";//Amritansh-HP
+	public static final String RM_TWO = "gost-via-mac";// 172.31.36.174
+	public static final String RM_THREE = "132.205.64.136";//Amritansh - Lab computer
 	//this may not be used all the time
 	public static final String RM_FOUR = "";
 	

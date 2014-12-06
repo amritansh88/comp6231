@@ -33,13 +33,13 @@ public class MessageRunner {
 		System.out.println("Size of data to be sent :" + data.length() + " bytes");
 		System.out.print("Sequencer: Ready to send data " + "\n");
 		
-		DatagramPacket request = new DatagramPacket(bdata, bdata.length, InetAddress.getByName(Configuration.RM_ONE), Configuration.REPLICA_MANAGER_SOCKET);
+		DatagramPacket request = new DatagramPacket(bdata, bdata.length, InetAddress.getByName(Configuration.RM_ONE), Configuration.RM_PORT_NUMBER);
 		sequencerSocket.send(request);
 		//timesout after 1 minute
 		sequencerSocket.setSoTimeout(10000000);
 		
 		//waiting for the answer from the server
-		DatagramPacket response = new DatagramPacket( new byte[Configuration.BUFFER_SIZE], Configuration.BUFFER_SIZE, InetAddress.getByName(Configuration.RM_ONE), Configuration.REPLICA_MANAGER_SOCKET);
+		DatagramPacket response = new DatagramPacket( new byte[Configuration.BUFFER_SIZE], Configuration.BUFFER_SIZE, InetAddress.getByName(Configuration.RM_ONE), Configuration.RM_PORT_NUMBER);
 		sequencerSocket.receive(response);
 		System.out.println( new String(response.getData()) );
 	}

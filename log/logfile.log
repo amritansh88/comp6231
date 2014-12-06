@@ -6,3 +6,4 @@
 2014-12-05 17:54:24,682  INFO - drms.org.client.Client.main 133 - Password cannot be less than 6 characters.....Try Again
 2014-12-05 19:03:39,447  INFO - drms.org.client.Client.main 98 - Please choose from the following instiutions : concordia/mcgill/dawson
 2014-12-05 19:03:55,900  INFO - drms.org.client.Client.main 119 - Username min:6 characters and max:15 characters.....Try Again
+2014-12-05 21:40:48,706  INFO - drms.org.client.Client.main 119 - Username min:6 characters and max:15 characters.....Try Again
