@@ -8,23 +8,19 @@ import drms.org.frontend.ClientMessageListener;
 import drms.org.frontend.SequencerMessageListener;
 import drms.org.util.Configuration;
 
+/**
+ * The Sequencer initializes 
+ * 	- Socket on which the sequencer listens messages from FrontEnd 
+ * 	- FrontEndMessageListener, a listener that captures messages from FrontEnd.
+ *  - FrontEndMessageListener stamps messages before sending messages to 
+ * @author murindwaz
+ */
+public class SequencerDriver {
 
-public class SequencerDriver extends SequencerImpl {
-	
-
-
-
-	SequencerDriver(DatagramSocket replicaSocket) throws UnknownHostException {
-		super(replicaSocket);
-	}
-	
 	public static void main(String args[]) throws SocketException, UnknownHostException{
-		
+		System.out.println("*** Sequencer is up and running = Requests will be forwarded to FrontEnd ***");
 		DatagramSocket frontEndToSequencerSocket = new DatagramSocket( Configuration.SEQUENCER_PORT_NUMBER);
-		SequencerImpl sequencerImpl=new SequencerImpl( frontEndToSequencerSocket );
-		System.out.println("**************SequencerDriver is up and Running*************");
-		System.out.println("**************Data would be forwarded to Replica Managers*************");
-		//sequencerImpl.receiveFrontEndMessage(udpFrontEndPortNumber);
+		SequencerImpl sequencerImpl = new SequencerImpl( frontEndToSequencerSocket );
 		(new Thread( new FrontEndMessageListener(sequencerImpl, frontEndToSequencerSocket))).start(); 
 	}
 }

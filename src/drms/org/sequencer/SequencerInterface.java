@@ -8,10 +8,4 @@ package drms.org.sequencer;
 
 public interface SequencerInterface {
 	
-	public String receiveFrontEndMessage(int portNumber);
-	
-	public String addMessageID(String clientMessage);
-	
-	public void sendMulticastMessage( String data);
-	
 }

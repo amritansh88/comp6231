@@ -15,10 +15,8 @@ import drms.org.util.NetworkMessageParser;
 /**
  * The FrontEndMessage listener, listerns to message coming from the front end,
  * and forward them to Replica Managers.
- * 
  * @todo acknowledge the front end about that operation
  * @author murindwaz
- *
  */
 public class FrontEndMessageListener implements MessageListener {
 
