@@ -1,9 +1,2 @@
-2014-12-05 15:26:41,830  INFO - drms.org.client.Client.main 122 - Please choose from the following instiutions : concordia/mcgill/dawson
-2014-12-05 15:26:46,780  INFO - drms.org.client.Client.main 122 - Please choose from the following instiutions : concordia/mcgill/dawson
-2014-12-05 15:53:09,108  INFO - drms.org.client.Client.main 274 - You chose to exit the application. Have a nice day !
-2014-12-05 17:54:08,166  INFO - drms.org.client.Client.main 98 - Please choose from the following instiutions : concordia/mcgill/dawson
-2014-12-05 17:54:08,212  INFO - drms.org.client.Client.main 98 - Please choose from the following instiutions : concordia/mcgill/dawson
-2014-12-05 17:54:24,682  INFO - drms.org.client.Client.main 133 - Password cannot be less than 6 characters.....Try Again
-2014-12-05 19:03:39,447  INFO - drms.org.client.Client.main 98 - Please choose from the following instiutions : concordia/mcgill/dawson
-2014-12-05 19:03:55,900  INFO - drms.org.client.Client.main 119 - Username min:6 characters and max:15 characters.....Try Again
-2014-12-05 21:40:48,706  INFO - drms.org.client.Client.main 119 - Username min:6 characters and max:15 characters.....Try Again
+2014-12-08 19:52:32,701  INFO - drms.org.client.Client.main 78 - Please choose from the following instiutions : concordia/mcgill/dawson
+2014-12-08 19:53:02,612  INFO - drms.org.client.Client.main 78 - Please choose from the following instiutions : concordia/mcgill/dawson

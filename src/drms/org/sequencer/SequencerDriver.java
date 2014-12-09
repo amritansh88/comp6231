@@ -4,8 +4,6 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import drms.org.frontend.ClientMessageListener;
-import drms.org.frontend.SequencerMessageListener;
 import drms.org.util.Configuration;
 
 /**

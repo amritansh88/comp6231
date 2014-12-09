@@ -4,8 +4,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import drms.org.model.NetworkMessage;
 import drms.org.util.Configuration;
 import drms.org.util.MessageListener;
+import drms.org.util.NetworkMessageParser;
 
 /**
  * The client listener will be capturing messages coming from the client, 
@@ -30,7 +32,9 @@ public class ClientMessageListener implements MessageListener {
 					System.out.println("Waiting for datagram packet from client");
 					DatagramPacket receivePacket = new DatagramPacket(new byte[Configuration.BUFFER_SIZE], new byte[Configuration.BUFFER_SIZE].length);
 					socket.receive(receivePacket);
-					String message = new String(receivePacket.getData()) ;
+					NetworkMessage networkMessage = NetworkMessageParser.parse(new String(receivePacket.getData()));
+					//networkMessage.set
+					String message =  networkMessage.getPayload();
 					datagramSocket = new DatagramSocket();
 					datagramSocket.send( new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getLocalHost(), Configuration.SEQUENCER_PORT_NUMBER));
 					System.out.println( String.format("ClientMessageListener::onMessage %s ", new String(receivePacket.getData()) ) );

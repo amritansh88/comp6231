@@ -67,5 +67,7 @@ public class NetworkMessage {
 		this.replica = replica;
 	}
 
+	
+
 
 }
