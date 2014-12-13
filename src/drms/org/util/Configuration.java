@@ -21,8 +21,8 @@ public class Configuration {
 	 */
 	public static final int REPLICA_MANAGER_SOCKET = 2626;
 	public static final String RM_ONE = "172.31.93.79";//Amritansh-HP
-	public static final String RM_TWO = "gost-via-mac";// 172.31.36.174
-	public static final String RM_THREE = "132.205.64.136";//Amritansh - Lab computer
+	public static final String RM_TWO = "172.30.41.181";//gost-via-mac 
+	public static final String RM_THREE = "132.205.64.136";
 	//this may not be used all the time
 	public static final String RM_FOUR = "";
 	
