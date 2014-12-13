@@ -25,7 +25,6 @@ public class FrontEndDriver extends FrontEndImpl{
 		System.out.println("**************FrontEnd is up and Running*************");
 		System.out.println("**************Data would be forwarded to Sequencer*************");
 		(new Thread( new ClientMessageListener(frontEnd, clientToFrontEndSocket))).start(); 
-		(new Thread( new SequencerMessageListener(frontEnd, sequencerToFrontEndSocket))).start();
 		(new Thread( new ReplicaMessageListener(frontEnd, clientToFrontEndSocket))).start();
 	}
 }

@@ -17,8 +17,8 @@ public class SequencerDriver {
 
 	public static void main(String args[]) throws SocketException, UnknownHostException{
 		System.out.println("*** Sequencer is up and running = Requests will be forwarded to FrontEnd ***");
-		DatagramSocket frontEndToSequencerSocket = new DatagramSocket( Configuration.SEQUENCER_PORT_NUMBER);
-		SequencerImpl sequencerImpl = new SequencerImpl( frontEndToSequencerSocket );
-		(new Thread( new FrontEndMessageListener(sequencerImpl, frontEndToSequencerSocket))).start(); 
+		DatagramSocket socket = new DatagramSocket( Configuration.SEQUENCER_PORT_NUMBER);
+		SequencerImpl sequencerImpl = new SequencerImpl( socket );
+		(new Thread( new FrontEndMessageListener(sequencerImpl, socket ))).start(); 
 	}
 }

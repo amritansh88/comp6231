@@ -11,6 +11,8 @@ public class Configuration {
 	public static final int FRONTEND_PORT_NUMBER = 2233; 
 	public static final int SEQUENCER_TO_FRONTEND_PORT_NUMBER = 2244;
 	public static final int SEQUENCER_PORT_NUMBER = 1098;
+	//port to which send/receive will be done on client side 
+	public static final int CLIENT_PORT_NUMBER = 1099;
 	/**
 	 * @deprecated has to be replaced with RM_PORT_NUMBER instead
 	 */

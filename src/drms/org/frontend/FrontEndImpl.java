@@ -12,37 +12,55 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.Map;
 
+import drms.org.model.NetworkMessage;
+import drms.org.model.Traffic;
 import drms.org.util.Configuration;
 
 public class FrontEndImpl  {
-
-	final static int udpClientPortNumber = 1098;
-	final static int RM_PORT_NUMBER = 2525;;
-	static InetAddress IPAddress;
+	
 	static int uniqueID = 0;
 	
+	/**
+	 * The traffic will record all  acknowledgments
+	 */
+	private Map<String, Traffic> acknowledgments;
+	/**
+	 * the traffic will keep track of all sent messages.
+	 * It is the same thing as in Sequencer 
+	 */
+	private Map<String, Map<String, NetworkMessage>> traffic;
+
+	
+	
+	//will be used by external accessors
+	public Map<String, Traffic> getAcknowledgments() {
+		return acknowledgments;
+	}
+	
+	/**
+	 * getTraffic is used to check message arrival, and make decision to forward messages to client after N messages arrived
+	 * @return
+	 */
+	public Map<String,Map<String, NetworkMessage>> getTraffic(){
+		return traffic;
+	}
+	 
+			
 	
 	/**
 	 * Available sockets 
 	 */
 	private DatagramSocket clientCommunicationSocket;
-	private DatagramSocket sequencerCommunicationSocket;
-
-	
-	
-	
 	private HashMap<Integer, String> messageMap = new HashMap<Integer, String>();
+
 	FrontEndImpl(DatagramSocket clientToFrontEndSocket, DatagramSocket sequencerToFrontEndSocket) {
 		clientCommunicationSocket = clientToFrontEndSocket;
-		sequencerCommunicationSocket = sequencerToFrontEndSocket;
-		try {
-			IPAddress = InetAddress.getLocalHost();
-		} catch (final UnknownHostException e) {
-			e.printStackTrace();
-		}
+		acknowledgments = new HashMap<String,Traffic>(); 
+		traffic = new HashMap<String, Map<String, NetworkMessage>>();
+
 	}
 
 	/**
@@ -50,9 +68,9 @@ public class FrontEndImpl  {
 	 */
 	public String validateServerResponse(String response1, String response2, String response3) {
 		if (response1.equals(response2) && response1.equals(response3)) {
-			sendClientResponse(udpClientPortNumber, response1);
+			sendClientResponse(Configuration.CLIENT_PORT_NUMBER, response1);
 		}
-		sendClientResponse(udpClientPortNumber, response1);
+		sendClientResponse(Configuration.CLIENT_PORT_NUMBER, response1);
 		// incase not send information to replica manager
 		return null;
 	}
@@ -73,7 +91,7 @@ public class FrontEndImpl  {
 				//@todo change this mechanism, it is not good to this way 
 				clientCommunicationSocket.receive(receivePacket);
 				String serverMessage = new String(receivePacket.getData());
-				System.out.println("From FrontEnd: " + IPAddress + ":" + RM_PORT_NUMBER);
+				System.out.println("From FrontEnd: " + InetAddress.getLocalHost() + ":" + Configuration.RM_PORT_NUMBER);
 				System.out.println("Message: " + serverMessage);
 				serverResponse = serverMessage;
 				validateServerResponse(serverResponse1, serverResponse2, serverResponse3);
@@ -97,7 +115,7 @@ public class FrontEndImpl  {
 			sendData = data.getBytes();
 			System.out.println("Size of data to be sent :" + data.length() + " bytes");
 			System.out.print("CLIENT : Ready to send data " + "\n");
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, portNumber);
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getLocalHost(), portNumber);
 			frontEndSocket.send(sendPacket);
 			frontEndSocket.setSoTimeout(10000000);
 			frontEndSocket.close();
@@ -131,7 +149,7 @@ public class FrontEndImpl  {
 				clientCommunicationSocket.receive(receivePacket);
 				clientRequestMessage = new String(receivePacket.getData());
 				InetAddress IPAddress = receivePacket.getAddress();
-				System.out.println("From : " + IPAddress + ":" + udpClientPortNumber);
+				System.out.println("From : " + IPAddress + ":" + Configuration.CLIENT_PORT_NUMBER);
 				System.out.println("Message received from Client: " + clientRequestMessage);
 				sendSequencerMessage(Configuration.FRONTEND_PORT_NUMBER, clientRequestMessage);
 			}
@@ -145,8 +163,7 @@ public class FrontEndImpl  {
 	}
 
 	/**
-	 * Description: Update a HashMap with the message response returned by the
-	 * sequencer
+	 * Description: Update a HashMap with the message response returned by the sequencer
 	 * 
 	 * @param key
 	 * @param value
@@ -158,7 +175,7 @@ public class FrontEndImpl  {
 
 	/**
 	 * Description: Send message to sequencer
-	 * 
+	 * @deprecated This function has been replaced by ClientMessageListener 
 	 * @param portNumber
 	 * @param data
 	 */
@@ -172,7 +189,7 @@ public class FrontEndImpl  {
 			sendData = data.getBytes();
 			System.out.println("Data sent to the sequencer is of size :" + data.length() + "bytes");
 			System.out.print("Ready to send data to Sequencer" + "\n");
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, portNumber);
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getLocalHost(), portNumber);
 			frontEndSocket.send(sendPacket);
 			frontEndSocket.setSoTimeout(10000);
 			try {
@@ -197,5 +214,7 @@ public class FrontEndImpl  {
 		}
 		return response;
 	}
+
+	
 
 }

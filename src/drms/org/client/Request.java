@@ -37,8 +37,8 @@ public class Request {
 	 * @param data
 	 * @return server response
 	 */
-	public String send(String data) {
-		String fronEndResponse = null;
+	public void send(String data) {
+		String response = null;
 		try {
 			byte[] receiveData = new byte[102400];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -48,13 +48,14 @@ public class Request {
 			System.out.println("Size of data to be sent :" + data.length() + " bytes");
 			System.out.print("CLIENT : Ready to send data " + "\n");
 			clientSocket.send(new DatagramPacket(sendData, sendData.length, InetAddress.getLocalHost(), Configuration.FRONTEND_PORT_NUMBER));
-			clientSocket.setSoTimeout(10000000);
+			//@todo remember to un-comment this line 
+			//clientSocket.setSoTimeout(10000000);
 			try {
 				clientSocket.receive(receivePacket);
-				fronEndResponse =  new String(receivePacket.getData());
+				response =  new String(receivePacket.getData());
 				InetAddress returnIPAddress = receivePacket.getAddress();
 				System.out.println("From FrontEnd at: " + returnIPAddress + ":" + receivePacket.getPort());
-				System.out.println("Message from Front End: " + fronEndResponse);
+				System.out.println("Message from Front End: " + response);
 			} catch (final SocketTimeoutException ste) {
 				System.out.println("Timeout Occurred: Packet assumed lost");
 			}
@@ -62,10 +63,7 @@ public class Request {
 			e.printStackTrace();
 		} catch (final IOException e) {
 			e.printStackTrace();
-		}finally{
-			clientSocket.close();
 		}
-		return fronEndResponse;
 	}
 
 

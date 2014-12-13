@@ -49,5 +49,10 @@ public class StringTransformer {
 	public static String getString(Reservation reservation){
 		return (new Gson()).toJson(reservation);
 	}
+
+
+	public static String getString(Traffic traffic) {
+		return (new Gson()).toJson(traffic);
+	}
 	
 }

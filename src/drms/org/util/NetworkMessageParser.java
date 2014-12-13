@@ -100,4 +100,12 @@ public class NetworkMessageParser {
 		reservation.setBook(book);
 		return reservation;
 	}
+	
+	
+	
+	
+	public static Traffic parseTraffic( NetworkMessage networkMessage ){
+		Traffic traffic = (new Gson()).fromJson(networkMessage.getPayload(), Traffic.class);
+		return traffic;
+	}
 }

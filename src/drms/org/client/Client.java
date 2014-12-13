@@ -20,6 +20,11 @@ import drms.org.util.Configuration;
 import drms.org.util.StringTransformer;
 
 
+
+
+/**
+ * @todo remove all _response = "" and listen to whatever comes later... 
+ */
 public class Client {
 
 	static final Logger log = Logger.getLogger(Client.class);
@@ -29,11 +34,10 @@ public class Client {
 		 * Variables to store menu options from student/administrator as input from command line
 		 */
 		int _userChoice = 0;
-		final DatagramSocket reqestResponseSocket = new DatagramSocket();
+		final DatagramSocket socket = new DatagramSocket(Configuration.CLIENT_PORT_NUMBER);
 		// ClientProcess Reference for sending messages from Client
-		Request clientProcess = new Request(reqestResponseSocket);
+		Request request = new Request(socket);
 		//This thread will wait for responses from FrontEnd 
-		new Thread( new Response(reqestResponseSocket) ).start();
 
 		/**
 		 * Variable reference to obtain user input
@@ -55,8 +59,8 @@ public class Client {
 		String _userInputbookName = "";
 		String _authorName = "";
 		int _numDays = 0;
-
-		String _response = null;
+		
+		
 		String destination = null;
 		String payload = null;
 		Configuration.showWelcomeMenu();
@@ -132,11 +136,10 @@ public class Client {
 					payload = StringTransformer.getString(new Account(_userInputFirstName, _userInputLastName,
 							_userInputEmailAddress, _userInputPhoneNumber, _userInputUserName, _userInputPassword,
 							_userInputEducationalInstitution));
-					_response = clientProcess.send(StringTransformer.getString(new NetworkMessage(destination,
-							Configuration.ACCOUNT_OPERATION, payload)));
-					log.info(_response);
+					request.send(StringTransformer.getString(new NetworkMessage(destination,Configuration.ACCOUNT_OPERATION, payload)));
+					//@todo new Response().receive();//expires after 1 minute or simply Thread.sleep(10000); 
 					Configuration.showWelcomeMenu();
-					break;
+				break;
 
 				// Logic for overDue
 				case 2:
@@ -179,9 +182,7 @@ public class Client {
 					overdue.getAccount().setInstitution(_adminInputEducationalInstitution);
 					overdue.setDays(_numDays);
 					payload = StringTransformer.getString(overdue);
-					_response = clientProcess.send(StringTransformer.getString(new NetworkMessage(
-							_adminInputEducationalInstitution, Configuration.OVERDUE_OPERATION, payload)));
-					log.info(_response);
+					request.send(StringTransformer.getString(new NetworkMessage(_adminInputEducationalInstitution, Configuration.OVERDUE_OPERATION, payload)));
 					Configuration.showWelcomeMenu();
 					break;
 
@@ -212,17 +213,16 @@ public class Client {
 					destination = _adminInputEducationalInstitution;
 					payload = StringTransformer.getString(new Reservation(_userInputUserName, _userInputPassword,
 							_userInputbookName, _authorName, _adminInputEducationalInstitution));
-					_response = clientProcess.send(StringTransformer.getString(new NetworkMessage(destination,
-							Configuration.RESERVATION_OPERATION, payload)));
-					log.info(_response);
+					request.send(StringTransformer.getString(new NetworkMessage(destination,Configuration.RESERVATION_OPERATION, payload)));
 					Configuration.showWelcomeMenu();
-					break;
+				break;
 				case 4:
 					log.info("You chose to exit the application. Have a nice day !");
 					_keyboardInputGeneralMenu.close();
 					System.exit(0);
 				default:
 					log.info("Invalid Input, please try again.");
+				break;
 				}
 			}
 		} catch (Exception e) {
