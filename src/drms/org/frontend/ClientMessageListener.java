@@ -3,6 +3,7 @@ package drms.org.frontend;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.HashMap;
 
 import drms.org.model.NetworkMessage;
 import drms.org.model.Traffic;
@@ -41,12 +42,13 @@ public class ClientMessageListener implements MessageListener {
 					datagramSocket = new DatagramSocket();
 					datagramSocket.send(new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getLocalHost(), Configuration.SEQUENCER_PORT_NUMBER));
 					System.out.println( String.format("ClientMessageListener::onMessage %s ", new String(receivePacket.getData()) ) );
-					//@todo should expire after n times without receiving aknowledgment from the FrontEndMessageListener 
 					receivePacket = new DatagramPacket(new byte[Configuration.BUFFER_SIZE], new byte[Configuration.BUFFER_SIZE].length);
 					datagramSocket.receive(receivePacket);
-					networkMessage.setPayload(new String(receivePacket.getData()));
-					//receive a traffic message, which will be updated to the waiting list 
-					Traffic traffic = NetworkMessageParser.parseTraffic( networkMessage );
+					NetworkMessage trafficMessage = NetworkMessageParser.parse( new String(receivePacket.getData()) );
+					Traffic traffic = NetworkMessageParser.parseTraffic( trafficMessage );
+					networkMessage.setId(traffic.getMessageId());
+					trafficMessage.setDestination(networkMessage.getDestination());
+					frontEnd.getTraffic().put(networkMessage.getId(), new HashMap<String,NetworkMessage>());
 					frontEnd.getAcknowledgments().put(traffic.getMessageId(), traffic);
 				}catch( Exception e ){
 					e.printStackTrace();

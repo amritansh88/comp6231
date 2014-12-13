@@ -137,7 +137,6 @@ public class Client {
 							_userInputEmailAddress, _userInputPhoneNumber, _userInputUserName, _userInputPassword,
 							_userInputEducationalInstitution));
 					request.send(StringTransformer.getString(new NetworkMessage(destination,Configuration.ACCOUNT_OPERATION, payload)));
-					//@todo new Response().receive();//expires after 1 minute or simply Thread.sleep(10000); 
 					Configuration.showWelcomeMenu();
 				break;
 

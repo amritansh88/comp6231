@@ -19,6 +19,7 @@ public class NetworkMessageParser {
 	 */
 	public static NetworkMessage parse(String argument) {
 		Gson gson = new Gson();
+		//NetworkMessage nmsg = gson.fromJson(argument, NetworkMessage.class);
 		JsonReader reader = new JsonReader(new StringReader(argument.trim()));
 		JsonObject json = gson.fromJson(reader, JsonObject.class);
 		reader.setLenient(true);
@@ -30,6 +31,7 @@ public class NetworkMessageParser {
 		if (json.has("replica")) {
 			networkMessage.setReplica(json.getAsJsonPrimitive("replica").getAsString());
 		}
+		
 		return networkMessage;
 	}
 

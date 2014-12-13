@@ -1,5 +1,7 @@
 package drms.org.util;
 
+import java.net.SocketAddress;
+
 
 /**
  * This configuration file will be used to hold some shared variables 
@@ -10,6 +12,7 @@ public class Configuration {
 	public static final int RM_PORT_NUMBER = 2626; 
 	public static final int FRONTEND_PORT_NUMBER = 2233; 
 	public static final int SEQUENCER_TO_FRONTEND_PORT_NUMBER = 2244;
+	public static final int RM_TO_FRONTEND_PORT_NUMBER = 2255;
 	public static final int SEQUENCER_PORT_NUMBER = 1098;
 	//port to which send/receive will be done on client side 
 	public static final int CLIENT_PORT_NUMBER = 1099;
@@ -31,6 +34,7 @@ public class Configuration {
 	public static final String[] ALLOWED_INSTITUTIONS = new String[]{CONCORDIA, MCGILL, DAWSON};
 	
 	//Operations 
+	public static final String  ACKNOWLEDGMENT_OPERATION = "ack";
 	public static final String  ACCOUNT_OPERATION = "account";
 	public static final String  OVERDUE_OPERATION = "overdue";
 	public static final String  RESERVATION_OPERATION = "reservation";
