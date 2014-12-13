@@ -10,6 +10,7 @@ import drms.org.model.Traffic;
 import drms.org.util.Configuration;
 import drms.org.util.MessageListener;
 import drms.org.util.NetworkMessageParser;
+import drms.org.util.StringTransformer;
 
 /**
  * The ClientMessageListener : 
@@ -38,7 +39,7 @@ public class ClientMessageListener implements MessageListener {
 					DatagramPacket receivePacket = new DatagramPacket(new byte[Configuration.BUFFER_SIZE], new byte[Configuration.BUFFER_SIZE].length);
 					socket.receive(receivePacket);
 					NetworkMessage networkMessage = NetworkMessageParser.parse(new String(receivePacket.getData()));
-					String message =  networkMessage.getPayload();
+					String message =  StringTransformer.getString(networkMessage);
 					datagramSocket = new DatagramSocket();
 					datagramSocket.send(new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getLocalHost(), Configuration.SEQUENCER_PORT_NUMBER));
 					System.out.println( String.format("ClientMessageListener::onMessage %s ", new String(receivePacket.getData()) ) );

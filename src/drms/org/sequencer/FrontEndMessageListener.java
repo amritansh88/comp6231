@@ -48,20 +48,22 @@ public class FrontEndMessageListener implements MessageListener {
 				int uniqueID = sequencer.getUniqueId();
 				Traffic traffic = new Traffic(); 
 				traffic.setMessageId( String.valueOf(uniqueID) );
+				NetworkMessage networkMessage = NetworkMessageParser.parse(new String(request.getData()) );
+				networkMessage.setId( traffic.getMessageId() );
 				lsocket = new DatagramSocket();
-				for (Entry<String, InetAddress> node : nodes.entrySet()) {
-					if (!sequencer.getTraffic().containsKey(String.valueOf(uniqueID))) {
+				for( Entry<String, InetAddress> node : nodes.entrySet() ){
+					networkMessage.setReplica(node.getKey());
+					if( !sequencer.getTraffic().containsKey(String.valueOf(uniqueID)) ){
 						sequencer.getTraffic().put(String.valueOf(uniqueID), new HashMap<String, NetworkMessage>());
 					}
-					sequencer.getTraffic().get(String.valueOf(uniqueID))
-							.put(node.getKey(), NetworkMessageParser.parse(new String(request.getData())));
-					lsocket.send(new DatagramPacket(request.getData(), request.getData().length, node
-							.getValue(), Configuration.RM_PORT_NUMBER));
+					sequencer.getTraffic().get(String.valueOf(uniqueID)).put(node.getKey(), networkMessage);
+					lsocket.send(new DatagramPacket(request.getData(), request.getData().length, node.getValue(), Configuration.RM_PORT_NUMBER));
 					traffic.getReplicaManagers().add(node.getKey());
 				}
-				
 				//ClientMessageListener with MessageId, and List of RM to wait from 
-				NetworkMessage networkMessage = new NetworkMessage("", "", StringTransformer.getString(traffic));
+				networkMessage = new NetworkMessage(networkMessage.getDestination(), networkMessage.getOperation(), StringTransformer.getString(traffic));
+				networkMessage.setId( traffic.getMessageId() );
+				networkMessage.setId(traffic.getMessageId());
 				byte[] acknowledgment = StringTransformer.getString(networkMessage).getBytes();
 				lsocket.send(new DatagramPacket(acknowledgment, acknowledgment.length, request.getAddress(), request.getPort()));
 			} catch (Exception e) {
